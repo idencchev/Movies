@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
   },
+  favoriteMovies: [{ type: String }],
 });
 
 userSchema.pre("save", async function (next) {
