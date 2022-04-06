@@ -1,0 +1,58 @@
+.nav-user {
+  background-color: #5cdb95;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+}
+
+.nav-left {
+  margin: 5px;
+}
+
+.nav-center {
+  margin: 5px;
+}
+
+.nav-right {
+  margin: 5px;
+}
+
+.search-input {
+  height: 30px;
+  border-radius: 10px;
+  margin-right: 10px;
+  width: 300px;
+  border-color: #c2fbd7;
+}
+
+.my-nav-link,
+.btn-search {
+  background-color: #c2fbd7;
+  border-radius: 20px;
+  box-shadow: rgba(44, 187, 99, 0.2) 0 -25px 18px -14px inset,
+    rgba(44, 187, 99, 0.15) 0 1px 2px, rgba(44, 187, 99, 0.15) 0 2px 4px,
+    rgba(44, 187, 99, 0.15) 0 4px 8px, rgba(44, 187, 99, 0.15) 0 8px 16px,
+    rgba(44, 187, 99, 0.15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  touch-action: manipulation;
+  margin-right: 10px;
+  font-weight: lighter;
+}
+
+.my-nav-link:hover,
+.btn-search:hover {
+  box-shadow: rgba(44, 187, 99, 0.35) 0 -25px 18px -14px inset,
+    rgba(44, 187, 99, 0.25) 0 1px 2px, rgba(44, 187, 99, 0.25) 0 2px 4px,
+    rgba(44, 187, 99, 0.25) 0 4px 8px, rgba(44, 187, 99, 0.25) 0 8px 16px,
+    rgba(44, 187, 99, 0.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}

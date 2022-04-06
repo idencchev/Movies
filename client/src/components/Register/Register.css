@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,300&display=swap");
+
+.register {
+  display: grid;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #c2fbd7;
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.register-input {
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 3px solid rgb(7, 98, 134);
+  box-sizing: border-box;
+  border-radius: inherit;
+}
+
+.register-h1 {
+  color: #c2fbd7;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 54px;
+}
+
+.btn-register {
+  background-color: #c2fbd7;
+  border-radius: 20px;
+  box-shadow: rgba(44, 187, 99, 0.2) 0 -25px 18px -14px inset,
+    rgba(44, 187, 99, 0.15) 0 1px 2px, rgba(44, 187, 99, 0.15) 0 2px 4px,
+    rgba(44, 187, 99, 0.15) 0 4px 8px, rgba(44, 187, 99, 0.15) 0 8px 16px,
+    rgba(44, 187, 99, 0.15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  touch-action: manipulation;
+  font-weight: lighter;
+  width: 60%;
+  margin-top: 15px;
+}
+
+.btn-register:hover {
+  box-shadow: rgba(44, 187, 99, 0.35) 0 -25px 18px -14px inset,
+    rgba(44, 187, 99, 0.25) 0 1px 2px, rgba(44, 187, 99, 0.25) 0 2px 4px,
+    rgba(44, 187, 99, 0.25) 0 4px 8px, rgba(44, 187, 99, 0.25) 0 8px 16px,
+    rgba(44, 187, 99, 0.25) 0 16px 32px;
+  transform: scale(1.05);
+}
+
+.register-input:hover {
+  border: 3px solid rgb(7, 98, 134);
+}

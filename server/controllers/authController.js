@@ -6,12 +6,9 @@ const { registerUser, loginUser } = require("../services/authService");
 router.post("/register", async (req, res) => {
   try {
     const userData = await registerUser(req.body);
-    res
-      .status(201)
-      .json({
-        userData,
-        message: `${userData.username} has been created successfully.`,
-      });
+    res.status(201).json({
+      message: `${userData.username} has been created successfully.`,
+    });
   } catch (error) {
     return res.status(409).json({ error });
   }
@@ -24,12 +21,10 @@ router.post("/login", async (req, res) => {
       httpOnly: true,
       maxAge: 2 * 60 * 60 * 1000,
     }); // expires in 2 hours
-    res
-      .status(200)
-      .json({
-        userData,
-        message: `${userData.username} has been logget in successfully.`,
-      });
+    res.status(200).json({
+      userData,
+      message: `${userData.username} has been logget in successfully.`,
+    });
   } catch (error) {
     return res.status(403).json({ error });
   }
@@ -56,6 +51,7 @@ router.post("/verify", async (req, res, next) => {
           id: decoded.id,
           username: decoded.username,
           isVerified,
+          favoriteMovies: decoded.favoriteMovies,
         });
         return;
       }

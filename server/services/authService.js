@@ -20,12 +20,12 @@ async function registerUser(data) {
     password: data.password.trim(),
   });
 
-  const { username, _id } = await user.save();
-  return { username, _id };
+  const { username } = await user.save();
+  return { username };
 }
 
 async function loginUser(data) {
-  const { _id, username, password } =
+  const { _id, username, password, favoriteMovies } =
     (await User.findOne({ username: data.username.toLowerCase() })) || {};
 
   if (username == undefined) {
@@ -38,14 +38,19 @@ async function loginUser(data) {
     throw "Wrong password!";
   }
 
-  const token = jwt.sign({ id: _id, username: username }, JWT_SECRET, {
-    expiresIn: "2d",
-  });
+  const token = jwt.sign(
+    { id: _id, username: username, favoriteMovies: favoriteMovies },
+    JWT_SECRET,
+    {
+      expiresIn: "2d",
+    }
+  );
 
   return {
     _id: _id,
     username: username,
     token: token,
+    favoriteMovies: favoriteMovies,
   };
 }
 
