@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../../redux/actions";
-import { getAllMovies, logoutUser } from "../../api/data";
-import "./Navigation.css";
 import { bindActionCreators } from "redux";
-import SearchComponent from "../Search/SearchComponent/SearchComponent.js";
-import Search from "../Search/Search.js";
+
+import SearchComponent from "../Search/SearchComponent/SearchComponent";
+
+import { logoutUser } from "../../api/data";
+import "./Navigation.css";
 
 function Navigation() {
   const navigate = useNavigate();
@@ -23,7 +24,6 @@ function Navigation() {
 
   const [{ search }, setSearch] = useState({ search: "" });
 
-
   const searchHandler = (e) => {
     setSearch((prevSearchData) => ({
       ...prevSearchData,
@@ -34,6 +34,7 @@ function Navigation() {
   const searchMovies = async (e) => {
     e.preventDefault();
     navigate(`/search/${search}`);
+    e.target.search.value = "";
   };
 
   return (
