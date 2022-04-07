@@ -6,7 +6,7 @@ import { verifyToken } from "./api/data";
 
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
-import MovieDescription from "./components/MovieDescription/MovieDescription";
+import MovieDetails from "./components/MovieDetails/MovieDetails";
 import Navigation from "./components/Navigation/Navigation";
 import Register from "./components/Register/Register";
 import Search from "./components/Search/Search";
@@ -38,7 +38,7 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/search" element={<Search />} />
         <Route exact path="/search/:search" element={<Search />} />
-        <Route exact path="/:movieTitle" element={<MovieDescription />} />
+        <Route exact path="/:movieTitle" element={<MovieDetails />} />
       </Routes>
     </>
   );

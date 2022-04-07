@@ -27,6 +27,7 @@ function MovieCart({
     <div className="movie-cart">
       <div className="movie-cart-right">
         <MovieImageComponent
+          id={id}
           title={title}
           image={image}
           className={"movie-img"}

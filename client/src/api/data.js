@@ -99,3 +99,15 @@ export async function getFavoriteMovies(id) {
     console.log(error);
   }
 }
+
+export async function getMovieById(id) {
+  try {
+    const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${id}`, {
+      method: "GET",
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
