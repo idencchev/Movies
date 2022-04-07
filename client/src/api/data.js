@@ -66,3 +66,4 @@ export async function getFavoriteMovies(id) {
     console.log(error);
   }
 }
+
