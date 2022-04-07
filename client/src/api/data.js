@@ -55,6 +55,39 @@ export async function getAllMovies() {
   }
 }
 
+export const searchFunction = async (
+  searchQuery,
+  setSerachResults,
+  setNoResults,
+  navigate,
+  getAll
+) => {
+  if (searchQuery) {
+    const response = await fetch(
+      `https://api.tvmaze.com/search/shows?q=${searchQuery}`,
+      {
+        method: "GET",
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.length) {
+      setSerachResults(data);
+      setNoResults(false);
+      navigate(`/search/${searchQuery}`);
+    } else {
+      setNoResults(true);
+      navigate(`/search/${searchQuery}`);
+    }
+  } else {
+    getAll();
+    setNoResults(false);
+    setSerachResults([]);
+    navigate(`/search`);
+  }
+};
+
 export async function getFavoriteMovies(id) {
   try {
     const response = await fetch(`https://api.tvmaze.com/shows/${id}`, {
@@ -66,4 +99,3 @@ export async function getFavoriteMovies(id) {
     console.log(error);
   }
 }
-

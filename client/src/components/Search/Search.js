@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import MovieCart from "./MovieCart/MovieCart.js";
-import SearchComponent from "./SearchComponent/SearchComponent.js";
-import "./Search.css";
-import { getAllMovies } from "../../api/data";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import MovieCart from "./MovieCart/MovieCart";
+import SearchComponent from "./SearchComponent/SearchComponent";
+
+import { getAllMovies, searchFunction } from "../../api/data";
+import "./Search.css";
 
 function Search() {
   const location = useLocation();
@@ -25,37 +27,14 @@ function Search() {
     setMovies(data);
   };
 
-  const searchFunction = async (searchQuery) => {
-    console.log(searchQuery);
-    if (searchQuery) {
-      const response = await fetch(
-        `https://api.tvmaze.com/search/shows?q=${searchQuery}`,
-        {
-          method: "GET",
-        }
-      );
-
-      const data = await response.json();
-
-      if (data.length) {
-        setSerachResults(data);
-        setNoResults(false);
-        navigate(`/search/${searchQuery}`);
-      } else {
-        setNoResults(true);
-        navigate(`/search/${searchQuery}`);
-      }
-    } else {
-      getAll();
-      setNoResults(false);
-      setSerachResults([]);
-      navigate(`/search`);
-    }
-  };
-
   useEffect(() => {
-    searchFunction(searchQuery || search);
-    getAll();
+    searchFunction(
+      searchQuery || search,
+      setSerachResults,
+      setNoResults,
+      navigate,
+      getAll
+    );
   }, []);
 
   const moviesPerPage = 2;
@@ -71,7 +50,7 @@ function Search() {
     setPageNumber(selected);
   };
 
-  //search
+  // search
   const searchHandler = (e) => {
     setSearch((prevSearchData) => ({
       ...prevSearchData,
@@ -82,12 +61,13 @@ function Search() {
   const searchMovies = async (e) => {
     e.preventDefault();
     try {
-      searchFunction(search);
+      searchFunction(search, setSerachResults, setNoResults, navigate, getAll);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // display all movies
   const displayMovies = movies
     .slice(pagesVisited, pagesVisited + moviesPerPage)
     .map((movie) => {
@@ -106,6 +86,7 @@ function Search() {
       );
     });
 
+  // display search movies
   const displaySearchResults = searchResults
     .slice(pagesVisited, pagesVisited + moviesPerPage)
     .map((movie) => {
