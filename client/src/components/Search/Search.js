@@ -35,7 +35,7 @@ function Search() {
       navigate,
       getAll
     );
-  }, []);
+  }, [searchQuery]);
 
   const moviesPerPage = 2;
   const pagesVisited = pageNumber * moviesPerPage;
@@ -62,6 +62,7 @@ function Search() {
     e.preventDefault();
     try {
       searchFunction(search, setSerachResults, setNoResults, navigate, getAll);
+      e.target.search.value = "";
     } catch (error) {
       console.log(error);
     }

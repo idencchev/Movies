@@ -34,6 +34,7 @@ function Navigation() {
   const searchMovies = async (e) => {
     e.preventDefault();
     navigate(`/search/${search}`);
+    setSearch({ search: "" });
     e.target.search.value = "";
   };
 
