@@ -37,6 +37,7 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/search" element={<Search />} />
+        <Route exact path="/search/:search" element={<Search />} />
         <Route exact path="/:movieTitle" element={<MovieDescription />} />
       </Routes>
     </>

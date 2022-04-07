@@ -4,8 +4,14 @@ import MovieCart from "./MovieCart/MovieCart.js";
 import SearchComponent from "./SearchComponent/SearchComponent.js";
 import "./Search.css";
 import { getAllMovies } from "../../api/data";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Search() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const searchQuery = location.pathname.split("/")[2] || null;
+
   const [movies, setMovies] = useState([]);
 
   const [{ search }, setSearch] = useState({ search: "" });
@@ -19,7 +25,36 @@ function Search() {
     setMovies(data);
   };
 
+  const searchFunction = async (searchQuery) => {
+    console.log(searchQuery);
+    if (searchQuery) {
+      const response = await fetch(
+        `https://api.tvmaze.com/search/shows?q=${searchQuery}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.length) {
+        setSerachResults(data);
+        setNoResults(false);
+        navigate(`/search/${searchQuery}`);
+      } else {
+        setNoResults(true);
+        navigate(`/search/${searchQuery}`);
+      }
+    } else {
+      getAll();
+      setNoResults(false);
+      setSerachResults([]);
+      navigate(`/search`);
+    }
+  };
+
   useEffect(() => {
+    searchFunction(searchQuery || search);
     getAll();
   }, []);
 
@@ -47,27 +82,7 @@ function Search() {
   const searchMovies = async (e) => {
     e.preventDefault();
     try {
-      if (!search == "") {
-        const response = await fetch(
-          `https://api.tvmaze.com/search/shows?q=${search}`,
-          {
-            method: "GET",
-          }
-        );
-
-        const data = await response.json();
-
-        if (data.length) {
-          setSerachResults(data);
-          setNoResults(false);
-        } else {
-          setNoResults(true);
-        }
-      } else {
-        getAll();
-        setNoResults(false);
-        setSerachResults([]);
-      }
+      searchFunction(search);
     } catch (error) {
       console.log(error);
     }

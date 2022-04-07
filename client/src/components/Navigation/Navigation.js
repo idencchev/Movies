@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../../redux/actions";
-import { logoutUser } from "../../api/data";
+import { getAllMovies, logoutUser } from "../../api/data";
 import "./Navigation.css";
 import { bindActionCreators } from "redux";
 import SearchComponent from "../Search/SearchComponent/SearchComponent.js";
+import Search from "../Search/Search.js";
 
 function Navigation() {
   const navigate = useNavigate();
@@ -20,6 +21,21 @@ function Navigation() {
     navigate("/");
   };
 
+  const [{ search }, setSearch] = useState({ search: "" });
+
+
+  const searchHandler = (e) => {
+    setSearch((prevSearchData) => ({
+      ...prevSearchData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const searchMovies = async (e) => {
+    e.preventDefault();
+    navigate(`/search/${search}`);
+  };
+
   return (
     <div className="nav-user">
       <div className="nav-left">
@@ -28,7 +44,10 @@ function Navigation() {
         </Link>
       </div>
 
-      <SearchComponent />
+      <SearchComponent
+        searchHandler={searchHandler}
+        searchMovies={searchMovies}
+      />
 
       <div className="nav-right">
         {!isVerified ? (
