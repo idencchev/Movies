@@ -1,20 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../../redux/actions";
 import { logoutUser } from "../../api/data";
 import "./Navigation.css";
 import { bindActionCreators } from "redux";
+import SearchComponent from "../Search/SearchComponent/SearchComponent.js";
 
 function Navigation() {
-  const { isVerified } = useSelector((state) => state.account);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { isVerified } = useSelector((state) => state.account);
   const { logout } = bindActionCreators(actions, dispatch);
 
   const logoutHandler = async () => {
     await logoutUser();
     logout();
+    navigate("/");
   };
 
   return (
@@ -25,12 +28,7 @@ function Navigation() {
         </Link>
       </div>
 
-      <div className="nav-center">
-        <form className="nav-search">
-          <input className="search-input" type="text" />
-          <input className="btn-search" type="submit" value="Search" />
-        </form>
-      </div>
+      <SearchComponent />
 
       <div className="nav-right">
         {!isVerified ? (

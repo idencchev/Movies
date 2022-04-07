@@ -2,7 +2,7 @@ export const initialState = {
     isVerified: false,
     username: null,
     id: null,
-    favoriteMovies: null
+    favoriteMovies: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
                 isVerified: false,
                 username: null,
                 id: null,
-                favoriteMovies: null
+                favoriteMovies: []
             };
 
         case 'VERIFY':

@@ -1,0 +1,52 @@
+.movie-img {
+  width: 200px;
+  margin: 5px;
+  border-radius: 13px;
+  margin-top: 30px;
+}
+
+.movie-cart {
+  display: flex;
+  color: #c2fbd7;
+}
+
+.movie-cart-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.description {
+  width: 70%;
+  text-align: justify;
+}
+
+.movie-official-site,
+.add-remove-favorite {
+  background-color: #c2fbd7;
+  border-radius: 20px;
+  box-shadow: rgba(44, 187, 99, 0.2) 0 -25px 18px -14px inset,
+    rgba(44, 187, 99, 0.15) 0 1px 2px, rgba(44, 187, 99, 0.15) 0 2px 4px,
+    rgba(44, 187, 99, 0.15) 0 4px 8px, rgba(44, 187, 99, 0.15) 0 8px 16px,
+    rgba(44, 187, 99, 0.15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  touch-action: manipulation;
+  font-weight: lighter;
+  margin-top: 20px;
+}
+
+.movie-title-link {
+  text-decoration: none;
+  color: #c2fbd7;
+}

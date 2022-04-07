@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../api/data.js";
 import "./Register.css";
 
 function Register() {
-  
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -13,6 +15,7 @@ function Register() {
   const onCreateHandler = async (e) => {
     e.preventDefault();
     await registerUser(userData);
+    navigate("/");
   };
 
   const onChangeHandler = (e) => {

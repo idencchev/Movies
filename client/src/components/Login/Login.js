@@ -1,14 +1,15 @@
 import { createBrowserHistory } from "history";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { loginUser } from "../../api/data";
 import actions from "../../redux/actions";
 import "./Login.css";
 
-function Login(props) {
+function Login() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { login } = bindActionCreators(actions, dispatch);
 
   const [userData, setUserData] = useState({
@@ -27,16 +28,16 @@ function Login(props) {
     e.preventDefault();
     try {
       const response = await loginUser(userData);
-      
+
       const loginData = {
         isVerified: true,
         username: response.userData.username,
         id: response.userData._id,
-        favoriteMovies: response.userData.favoriteMovies
+        favoriteMovies: response.userData.favoriteMovies,
       };
 
       login(loginData);
-  
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

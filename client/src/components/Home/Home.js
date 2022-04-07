@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getFavoriteMovies } from "../../api/data.js";
+import MovieImageComponent from "../MovieImageComponent/MovieImageComponent.js";
 import "./Home.css";
 
 function Home() {
-  const  { username } = useSelector((state) => state.account);
+  const { username, favoriteMovies, isVerified } = useSelector(
+    (state) => state.account
+  );
+
+  const [favorite, setFavorite] = useState([]);
+
+  const favoriteMoviesData = () => {
+    favoriteMovies.forEach(async (id) => {
+      const data = await getFavoriteMovies(id);
+     
+      setFavorite((oldState) => {
+        return [...oldState, data];
+      });
+
+     
+    });
+  };
+
+  useEffect(() => {
+    favoriteMoviesData();
+  }, []);
+
+  //console.log(favorite);
 
   return (
     <div className="home">
@@ -21,34 +45,30 @@ function Home() {
 
       <div className="home-bottom">
         <h1 className="your-favorites-h1">Your Favorites</h1>
-        <Link to={`/:movieTitle`}>
-          <img
-            src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/action-movie-poster-template-design-0f5fff6262fdefb855e3a9a3f0fdd361_screen.jpg?ts=1636996054"
-            alt="error"
-            className="favorite-img"
-          />
-        </Link>
-        <Link to={`/:movieTitle`}>
-          <img
-            src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/action-movie-poster-template-design-0f5fff6262fdefb855e3a9a3f0fdd361_screen.jpg?ts=1636996054"
-            alt="error"
-            className="favorite-img"
-          />
-        </Link>
-        <Link to={`/:movieTitle`}>
-          <img
-            src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/action-movie-poster-template-design-0f5fff6262fdefb855e3a9a3f0fdd361_screen.jpg?ts=1636996054"
-            alt="error"
-            className="favorite-img"
-          />
-        </Link>
-        <Link to={`/:movieTitle`}>
-          <img
-            src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/action-movie-poster-template-design-0f5fff6262fdefb855e3a9a3f0fdd361_screen.jpg?ts=1636996054"
-            alt="error"
-            className="favorite-img"
-          />
-        </Link>
+        {isVerified ? (
+          <>
+            {favorite.length ? (
+              <>
+                {favorite.map((movie) => {
+                  return (
+                    <MovieImageComponent
+                      className={"favorite-img"}
+                      key={movie.id}
+                      image={movie.image.medium}
+                      title={movie.name}
+                    />
+                  );
+                })}
+              </>
+            ) : (
+              <p className="favorite-p">You don't have favorite movies yet!</p>
+            )}
+          </>
+        ) : (
+          <p className="favorite-p">
+            Please log in to see your favorite movies!
+          </p>
+        )}
       </div>
     </div>
   );

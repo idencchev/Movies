@@ -42,3 +42,27 @@ export async function verifyToken() {
     throw error;
   }
 }
+
+export async function getAllMovies() {
+  try {
+    const response = await fetch("https://api.tvmaze.com/shows", {
+      method: "GET",
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getFavoriteMovies(id) {
+  try {
+    const response = await fetch(`https://api.tvmaze.com/shows/${id}`, {
+      method: "GET",
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
