@@ -5,6 +5,7 @@ const endpoints = {
   register: "/api/auth/register",
   logout: "/api/auth/logout",
   verify: "/api/auth/verify",
+  userId: (id) => `/api/auth/user/${id}`,
 };
 
 export async function loginUser(data) {
@@ -102,12 +103,22 @@ export async function getFavoriteMovies(id) {
 
 export async function getMovieById(id) {
   try {
-    const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${id}`, {
+    const response = await fetch(`https://api.tvmaze.com/shows/${id}`, {
       method: "GET",
     });
 
     return await response.json();
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function getUserDataById(id) {
+  console.log(id);
+  try {
+    const response = await api.get(endpoints.userId(id));
+    return response;
+  } catch (error) {
+    throw error;
   }
 }

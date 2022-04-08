@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getFavoriteMovies } from "../../api/data.js";
+import { getFavoriteMovies, getUserDataById } from "../../api/data.js";
 import MovieImageComponent from "../MovieImageComponent/MovieImageComponent.js";
 import "./Home.css";
 
 function Home() {
-  const { username, favoriteMovies, isVerified } = useSelector(
-    (state) => state.account
-  );
+  const { id, username, isVerified } = useSelector((state) => state.account);
 
   const [favorite, setFavorite] = useState([]);
 
-  const favoriteMoviesData = () => {
+  const favoriteMoviesData = async () => {
+
+    const { favoriteMovies } = await getUserDataById(id);
+    
     favoriteMovies.forEach(async (id) => {
       const data = await getFavoriteMovies(id);
-     
+
       setFavorite((oldState) => {
         return [...oldState, data];
       });
-
-     
     });
   };
 
   useEffect(() => {
-    favoriteMoviesData();
+    
+     favoriteMoviesData();
   }, []);
 
   //console.log(favorite);

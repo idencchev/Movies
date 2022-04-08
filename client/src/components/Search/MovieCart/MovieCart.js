@@ -39,7 +39,7 @@ function MovieCart({
       <div className="movie-cart-left">
         <Link
           className="movie-title-link"
-          to={`/${title.split(" ").join("-")}`}
+          to={`/${title?.split(" ").join("-")}`}
         >
           <h2 className="movie-title">
             {title} ({year?.split("-").shift() || "Year is not available"})
@@ -47,7 +47,7 @@ function MovieCart({
         </Link>
 
         <p className="genre-time">
-          {genre.join(", ") || "Genre is not available"} |{" "}
+          {genre?.join(", ") || "Genre is not available"} |{" "}
           {averageRuntime || "not availabe"} minutes
         </p>
 

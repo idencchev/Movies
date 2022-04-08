@@ -54,7 +54,12 @@ async function loginUser(data) {
   };
 }
 
+async function getUserById(id) {
+  return await User.findById(id);
+}
+
 module.exports = {
   registerUser,
   loginUser,
+  getUserById,
 };
