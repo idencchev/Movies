@@ -24,10 +24,10 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.put("/", async (req, res) => {
   try {
-    const { _id, favoriteMovies } = await removeFavoriteMovie(req.body);
-    res.status(201).json({ _id, favoriteMovies });
+    const data = await removeFavoriteMovie(req.body);
+    res.status(201).json(data);
   } catch (error) {
     return res.status(409).json({ error });
   }

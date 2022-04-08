@@ -4,6 +4,7 @@ import { ExternalLink } from "react-external-link";
 import { useSelector } from "react-redux";
 import "./MovieCart.css";
 import MovieImageComponent from "../../MovieImageComponent/MovieImageComponent.js";
+import { addFavoriteMovie, deleteFavoriteMovie } from "../../../api/data.js";
 
 function MovieCart({
   id,
@@ -15,13 +16,16 @@ function MovieCart({
   genre,
   averageRuntime,
 }) {
-  const { isVerified } = useSelector((state) => state.account);
+  const { isVerified, userId } = useSelector((state) => state.account);
   const [favorite, setFavoriteState] = useState(true);
 
-  const isFavorite = () => {
+  const isFavorite = async () => {
+   //// console.log(id, userId);
     if (favorite) {
+      const add = await addFavoriteMovie({ movieId: id, id: userId });
       return setFavoriteState(false);
     }
+    const remove = await deleteFavoriteMovie({ movieId: id, id: userId });
     setFavoriteState(true);
   };
 

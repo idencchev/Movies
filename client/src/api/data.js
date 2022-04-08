@@ -6,6 +6,7 @@ const endpoints = {
   logout: "/api/auth/logout",
   verify: "/api/auth/verify",
   userId: (id) => `/api/auth/user/${id}`,
+  favorites: "/api/favorites",
 };
 
 export async function loginUser(data) {
@@ -114,9 +115,26 @@ export async function getMovieById(id) {
 }
 
 export async function getUserDataById(id) {
-  console.log(id);
   try {
     const response = await api.get(endpoints.userId(id));
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function addFavoriteMovie(data) {
+  try {
+    const response = await api.post(endpoints.favorites, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteFavoriteMovie(data) {
+  try {
+    const response = await api.put(endpoints.favorites, data);
     return response;
   } catch (error) {
     throw error;

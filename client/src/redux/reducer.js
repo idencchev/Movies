@@ -1,7 +1,7 @@
 const initialState = {
   isVerified: false,
   username: null,
-  id: null,
+  userId: null,
   favoriteMovies: [],
 };
 
@@ -12,7 +12,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         isVerified: action.payload.isVerified,
         username: action.payload.username,
-        id: action.payload.id,
+        userId: action.payload.id,
         favoriteMovies: action.payload.favoriteMovies,
       };
 
@@ -21,7 +21,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         isVerified: false,
         username: null,
-        id: null,
+        userId: null,
         favoriteMovies: [],
       };
 
@@ -30,7 +30,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         isVerified: action.payload.isVerified,
         username: action.payload.username,
-        id: action.payload.id,
+        userId: action.payload.id,
         favoriteMovies: action.payload.favoriteMovies,
       };
     default:

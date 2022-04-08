@@ -4,24 +4,23 @@ async function getFavoriteMovies({ id }) {
   return await User.findById({ _id: id });
 }
 
-async function createFavoriteMovie({ id, movieId }) {
-  const { favoriteMovies } = await User.findById({ _id: id });
-
-  if (favoriteMovies.includes(movieId)) {
+async function createFavoriteMovie(data) {
+  const { favoriteMovies } = await User.findById({ _id: data.id });
+  if (favoriteMovies.includes(data.movieId)) {
     throw "This movie is already in the favorites list.";
   }
 
   return await User.findOneAndUpdate(
-    { _id: id },
-    { $push: { favoriteMovies: movieId } },
+    { _id: data.id },
+    { $push: { favoriteMovies: data.movieId } },
     { new: true }
   );
 }
 
-async function removeFavoriteMovie({ id, movieId }) {
+async function removeFavoriteMovie(data) {
   return await User.findOneAndUpdate(
-    { _id: id },
-    { $pull: { favoriteMovies: movieId } },
+    { _id: data.id },
+    { $pull: { favoriteMovies: data.movieId } },
     { new: true }
   );
 }

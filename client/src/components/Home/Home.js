@@ -6,14 +6,15 @@ import MovieImageComponent from "../MovieImageComponent/MovieImageComponent.js";
 import "./Home.css";
 
 function Home() {
-  const { id, username, isVerified } = useSelector((state) => state.account);
+  const { userId, username, isVerified } = useSelector(
+    (state) => state.account
+  );
 
   const [favorite, setFavorite] = useState([]);
 
   const favoriteMoviesData = async () => {
+    const { favoriteMovies } = await getUserDataById(userId);
 
-    const { favoriteMovies } = await getUserDataById(id);
-    
     favoriteMovies.forEach(async (id) => {
       const data = await getFavoriteMovies(id);
 
@@ -24,11 +25,9 @@ function Home() {
   };
 
   useEffect(() => {
-    
-     favoriteMoviesData();
+    favoriteMoviesData();
   }, []);
 
-  //console.log(favorite);
 
   return (
     <div className="home">
@@ -49,11 +48,12 @@ function Home() {
           <>
             {favorite.length ? (
               <>
-                {favorite.map((movie) => {
+                {[...new Map(favorite.map(item => [JSON.stringify(item), item])).values()].map((movie) => {
                   return (
                     <MovieImageComponent
                       className={"favorite-img"}
                       key={movie.id}
+                      id={movie.id}
                       image={movie.image.medium}
                       title={movie.name}
                     />
