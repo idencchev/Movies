@@ -4,7 +4,6 @@ import MovieCart from "../Search/MovieCart/MovieCart";
 
 function MovieDetails(props) {
 
-console.log(props);
 
 
   return (

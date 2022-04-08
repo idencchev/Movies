@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ExternalLink } from "react-external-link";
+import { useSelector } from "react-redux";
 import "./MovieCart.css";
 import MovieImageComponent from "../../MovieImageComponent/MovieImageComponent.js";
 
@@ -14,6 +15,7 @@ function MovieCart({
   genre,
   averageRuntime,
 }) {
+  const { isVerified } = useSelector((state) => state.account);
   const [favorite, setFavoriteState] = useState(true);
 
   const isFavorite = () => {
@@ -57,9 +59,14 @@ function MovieCart({
           Visit official site
         </ExternalLink>
 
-        <button onClick={isFavorite} className="add-remove-favorite">
-          {favorite ? "Add To Favorites" : "Remove From Favorites"}
-        </button>
+        {isVerified ? (
+          <button
+            onClick={isFavorite}
+            className={favorite ? "add-favorite" : "remove-favorite"}
+          >
+            {favorite ? "Add To Favorites" : "Remove From Favorites"}
+          </button>
+        ) : null}
       </div>
     </div>
   );
