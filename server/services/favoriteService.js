@@ -5,7 +5,6 @@ async function getFavoriteMovies({ id }) {
 }
 
 async function createFavoriteMovie(data) {
-  console.log(data);
   const { favoriteMovies } = await User.findById({ _id: data.id });
   if (favoriteMovies.includes(data.movieId)) {
     throw "This movie is already in the favorites list.";

@@ -59,9 +59,7 @@ router.post("/verify", async (req, res, next) => {
         isVerified = true;
         res.status(200).json({
           id: decoded.id,
-          username: decoded.username,
-          isVerified,
-          favoriteMovies: decoded.favoriteMovies,
+          isVerified
         });
         return;
       }
