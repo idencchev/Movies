@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ExternalLink } from "react-external-link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./MovieCart.css";
 import MovieImageComponent from "../../MovieImageComponent/MovieImageComponent.js";
-import { addFavoriteMovie, deleteFavoriteMovie } from "../../../api/data.js";
+import {
+  addFavoriteMovie,
+  deleteFavoriteMovie,
+  getUserDataById,
+} from "../../../api/data.js";
+import { bindActionCreators } from "redux";
+import actions from "../../../redux/actions.js";
 
 function MovieCart({
   id,
@@ -15,19 +21,31 @@ function MovieCart({
   description,
   genre,
   averageRuntime,
-  isFavoriteFromStore
+  isFavoriteFromStore,
 }) {
   const { isVerified, userId } = useSelector((state) => state.account);
-  const [favorite, setFavoriteState] = useState(true);
+
+  const dispatch = useDispatch();
+  const {
+    addMovieData,
+    addFavorite,
+    deleteMovieData,
+    removeFavorite,
+    updateFavorites,
+  } = bindActionCreators(actions, dispatch);
 
   const isFavorite = async () => {
-   //// console.log(id, userId);
-    if (favorite) {
-      const add = await addFavoriteMovie({ movieId: id, id: userId });
-      return setFavoriteState(false);
+    if (isFavoriteFromStore) {
+      await addFavoriteMovie({ movieId: id, id: userId });
+      const userData = await getUserDataById(userId);
+      addFavorite(id);
+      updateFavorites(userData);
+    } else {
+      await deleteFavoriteMovie({ movieId: id, id: userId });
+      const userData = await getUserDataById(userId);
+      updateFavorites(userData);
+      removeFavorite(id);
     }
-    const remove = await deleteFavoriteMovie({ movieId: id, id: userId });
-    setFavoriteState(true);
   };
 
   return (

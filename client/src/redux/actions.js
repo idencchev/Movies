@@ -24,6 +24,15 @@ const logout = () => {
   };
 };
 
+const updateFavorites = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: "UPDATE_FAVORITES",
+      payload: data,
+    });
+  };
+};
+
 const addDetails = (data) => {
   return (dispatch) => {
     dispatch({
@@ -42,7 +51,6 @@ const removeDetails = () => {
   };
 };
 
-
 const addMovieData = (data) => {
   return (dispatch) => {
     dispatch({
@@ -55,15 +63,25 @@ const addMovieData = (data) => {
 const deleteMovieData = () => {
   return (dispatch) => {
     dispatch({
-      type: "DELETE"
+      type: "DELETE",
     });
   };
 };
 
-const addFavorite = () => {
+const addFavorite = (id) => {
   return (dispatch) => {
     dispatch({
-      type: "ADD_FAVORITE"
+      type: "ADD_FAVORITE",
+      payload: id,
+    });
+  };
+};
+
+const removeFavorite = (id) => {
+  return (dispatch) => {
+    dispatch({
+      type: "REMOVE_FAVORITE",
+      payload: id,
     });
   };
 };
@@ -76,5 +94,7 @@ export default {
   removeDetails,
   addMovieData,
   addFavorite,
-  deleteMovieData
+  deleteMovieData,
+  removeFavorite,
+  updateFavorites
 };

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { verifyToken } from "./api/data";
+import { getUserDataById, verifyToken } from "./api/data";
 
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
@@ -15,11 +15,13 @@ import actions from "./redux/actions";
 function App() {
   const dispatch = useDispatch();
   const { verifyUser } = bindActionCreators(actions, dispatch);
-
+ 
   const verify = async () => {
     const verifyData = await verifyToken();
+  
     if (verifyData.isVerified) {
-      return verifyUser(verifyData);
+      const userData = await getUserDataById(verifyData.id);
+      return verifyUser(userData);
     }
   };
 

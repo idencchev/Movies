@@ -10,7 +10,7 @@ export const reducer = (state = initialState, action) => {
     case "LOGIN":
       return {
         ...state,
-        isVerified: action.payload.isVerified,
+        isVerified: true,
         username: action.payload.username,
         userId: action.payload.id,
         favoriteMovies: action.payload.favoriteMovies,
@@ -28,9 +28,18 @@ export const reducer = (state = initialState, action) => {
     case "VERIFY":
       return {
         ...state,
-        isVerified: action.payload.isVerified,
+        isVerified: true,
         username: action.payload.username,
-        userId: action.payload.id,
+        userId: action.payload._id,
+        favoriteMovies: action.payload.favoriteMovies,
+      };
+    case "UPDATE_FAVORITES":
+
+      return {
+        ...state,
+        isVerified: true,
+        username: action.payload.username,
+        userId: action.payload._id,
         favoriteMovies: action.payload.favoriteMovies,
       };
     default:
@@ -64,7 +73,30 @@ export const movieDataReducer = (state = [], action) => {
       return [];
 
     case "ADD_FAVORITE":
-    ///console.log(state);
+      let setToFalse = state.filter((x) => {
+        return x.id == action.payload;
+      });
+
+      setToFalse[0].isFavorite = false;
+
+      state.filter((x) => {
+        return x.id != action.payload;
+      });
+
+      return [...state, ...setToFalse];
+
+    case "REMOVE_FAVORITE":
+      let setToTrue = state.filter((x) => {
+        return x.id == action.payload;
+      });
+
+      setToTrue[0].isFavorite = true;
+
+      state.filter((x) => {
+        return x.id != action.payload;
+      });
+
+      return [...state, ...setToTrue];
     default:
       return state;
   }
