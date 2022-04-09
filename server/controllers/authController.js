@@ -39,7 +39,6 @@ router.get("/logout", (req, res) => {
 router.get("/user/:id", async (req, res) => {
   try {
     const userData = await getUserById(req.params.id);
-    console.log(userData);
     res.status(200).json(userData);
   } catch (error) {
     return res.status(409).json({ error });
