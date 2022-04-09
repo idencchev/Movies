@@ -33,6 +33,8 @@ function MovieDetails() {
     // other logic
   };
 
+  console.log(movieDetails);
+
   return (
     <div className="movie-details">
       <div className="movie-details-top">

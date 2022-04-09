@@ -59,11 +59,12 @@ export async function getAllMovies() {
 
 export const searchFunction = async (
   searchQuery,
-  setSerachResults,
   setNoResults,
   navigate,
-  getAll
+  useRefFaforiteMovies,
+  addMovieData
 ) => {
+
   if (searchQuery) {
     const response = await fetch(
       `https://api.tvmaze.com/search/shows?q=${searchQuery}`,
@@ -72,10 +73,26 @@ export const searchFunction = async (
       }
     );
 
-    const data = await response.json();
+    const fetchData = await response.json();
+    let data = [];
+    fetchData.forEach((movie) => {
+      data.push(movie.show);
+    });
+
+    data.forEach((movie) => {
+      const checkIsFavorite = useRefFaforiteMovies.current.some((id) => {
+        return id == movie.id;
+      });
+
+      if (checkIsFavorite) {
+        movie["isFavorite"] = false;
+      } else {
+        movie["isFavorite"] = true;
+      }
+    });
 
     if (data.length) {
-      setSerachResults(data);
+      addMovieData(data);
       setNoResults(false);
       navigate(`/search/${searchQuery}`);
     } else {
@@ -83,9 +100,19 @@ export const searchFunction = async (
       navigate(`/search/${searchQuery}`);
     }
   } else {
-    getAll();
+    const allMoviesData = await getAllMovies();
+    allMoviesData.forEach((movie) => {
+      const checkIsFavorite = useRefFaforiteMovies.current.some((id) => {
+        return id == movie.id;
+      });
+      if (checkIsFavorite) {
+        movie["isFavorite"] = false;
+      } else {
+        movie["isFavorite"] = true;
+      }
+    });
+    addMovieData(allMoviesData);
     setNoResults(false);
-    setSerachResults([]);
     navigate(`/search`);
   }
 };

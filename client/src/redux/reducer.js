@@ -38,23 +38,35 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
-export const detailsReducer = (stateDetails = { movieDetails: {} }, action) => {
-
-
+export const detailsReducer = (state = { movieDetails: {} }, action) => {
   switch (action.type) {
     case "DETAILS":
       return {
-        ...stateDetails,
-        movieDetails: action.payload,
+        ...state,
+        movieDetails: { ...action.payload, isFavorite: true },
       };
 
     case "REMOVE_DETAILS":
       return {
-        ...stateDetails,
+        ...state,
         movieDetails: action.payload,
       };
     default:
-      return stateDetails;
+      return state;
+  }
+};
+
+export const movieDataReducer = (state = [], action) => {
+  switch (action.type) {
+    case "LOAD":
+      return [...action.payload];
+    case "DELETE":
+      return [];
+
+    case "ADD_FAVORITE":
+    ///console.log(state);
+    default:
+      return state;
   }
 };
 

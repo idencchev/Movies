@@ -42,10 +42,39 @@ const removeDetails = () => {
   };
 };
 
+
+const addMovieData = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: "LOAD",
+      payload: data,
+    });
+  };
+};
+
+const deleteMovieData = () => {
+  return (dispatch) => {
+    dispatch({
+      type: "DELETE"
+    });
+  };
+};
+
+const updateMovieData = () => {
+  return (dispatch) => {
+    dispatch({
+      type: "ADD_FAVORITE"
+    });
+  };
+};
+
 export default {
   verifyUser,
   login,
   logout,
   addDetails,
   removeDetails,
+  addMovieData,
+  updateMovieData,
+  deleteMovieData
 };

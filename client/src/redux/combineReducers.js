@@ -1,9 +1,10 @@
 import { combineReducers } from "redux";
-import {detailsReducer, reducer} from "./reducer"
+import { detailsReducer, movieDataReducer, reducer } from "./reducer";
 
 const reducers = combineReducers({
-    account: reducer,
-    details: detailsReducer
+  account: reducer,
+  details: detailsReducer,
+  movieData: movieDataReducer,
 });
 
 export default reducers;

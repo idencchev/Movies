@@ -15,6 +15,7 @@ function MovieCart({
   description,
   genre,
   averageRuntime,
+  isFavoriteFromStore
 }) {
   const { isVerified, userId } = useSelector((state) => state.account);
   const [favorite, setFavoriteState] = useState(true);
@@ -66,9 +67,9 @@ function MovieCart({
         {isVerified ? (
           <button
             onClick={isFavorite}
-            className={favorite ? "add-favorite" : "remove-favorite"}
+            className={isFavoriteFromStore ? "add-favorite" : "remove-favorite"}
           >
-            {favorite ? "Add To Favorites" : "Remove From Favorites"}
+            {isFavoriteFromStore ? "Add To Favorites" : "Remove From Favorites"}
           </button>
         ) : null}
       </div>
