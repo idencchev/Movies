@@ -60,7 +60,7 @@ const deleteMovieData = () => {
   };
 };
 
-const updateMovieData = () => {
+const addFavorite = () => {
   return (dispatch) => {
     dispatch({
       type: "ADD_FAVORITE"
@@ -75,6 +75,6 @@ export default {
   addDetails,
   removeDetails,
   addMovieData,
-  updateMovieData,
+  addFavorite,
   deleteMovieData
 };

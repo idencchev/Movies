@@ -16,7 +16,7 @@ function Search() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { addMovieData, updateMovieData } = bindActionCreators(
+  const { addMovieData, addFavorite } = bindActionCreators(
     actions,
     dispatch
   );
