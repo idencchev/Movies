@@ -1,33 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getFavoriteMovies, getUserDataById } from "../../api/data.js";
-import MovieImageComponent from "../MovieImageComponent/MovieImageComponent.js";
+
+import MovieImageComponent from "../MovieImageComponent/MovieImageComponent";
+
+import {
+  getFavoriteMovies,
+  getUserDataById,
+  verifyToken,
+} from "../../api/data";
 import "./Home.css";
 
 function Home() {
-  const { userId, username, isVerified } = useSelector(
-    (state) => state.account
-  );
+  const { username, isVerified } = useSelector((state) => state.account);
 
   const [favorite, setFavorite] = useState([]);
 
   const favoriteMoviesData = async () => {
-    const { favoriteMovies } = await getUserDataById(userId);
+    const verifyData = await verifyToken();
 
-    favoriteMovies.forEach(async (id) => {
-      const data = await getFavoriteMovies(id);
+    if (verifyData.isVerified) {
+      const { favoriteMovies } = await getUserDataById(verifyData.id);
+      favoriteMovies.forEach(async (id) => {
+        const data = await getFavoriteMovies(id);
 
-      setFavorite((oldState) => {
-        return [...oldState, data];
+        setFavorite((oldState) => {
+          return [...oldState, data];
+        });
       });
-    });
+    }
   };
 
   useEffect(() => {
     favoriteMoviesData();
   }, []);
-
 
   return (
     <div className="home">
@@ -48,7 +54,11 @@ function Home() {
           <>
             {favorite.length ? (
               <>
-                {[...new Map(favorite.map(item => [JSON.stringify(item), item])).values()].map((movie) => {
+                {[
+                  ...new Map(
+                    favorite.map((item) => [JSON.stringify(item), item])
+                  ).values(),
+                ].map((movie) => {
                   return (
                     <MovieImageComponent
                       className={"favorite-img"}
