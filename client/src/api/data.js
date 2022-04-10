@@ -64,7 +64,6 @@ export const searchFunction = async (
   useRefFaforiteMovies,
   addMovieData
 ) => {
-
   if (searchQuery) {
     const response = await fetch(
       `https://api.tvmaze.com/search/shows?q=${searchQuery}`,
@@ -163,6 +162,20 @@ export async function deleteFavoriteMovie(data) {
   try {
     const response = await api.put(endpoints.favorites, data);
     return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getMovieByTitle(title) {
+  try {
+    const response = await fetch(
+      `https://api.tvmaze.com/singlesearch/shows?q=${title}`,
+      {
+        method: "GET",
+      }
+    );
+    return await response.json();
   } catch (error) {
     throw error;
   }

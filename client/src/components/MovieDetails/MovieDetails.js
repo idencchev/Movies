@@ -1,30 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
+import { useParams } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
-import { getMovieById, getUserDataById, verifyToken } from "../../api/data.js";
-import actions from "../../redux/actions.js";
+
 import MovieCart from "../Search/MovieCart/MovieCart";
+
+import { getMovieByTitle, getAllMovies } from "../../api/data";
+import actions from "../../redux/actions";
 import "./MovieDetails.css";
 
 function MovieDetails() {
   const { movieDetails } = useSelector((state) => state.details);
+  const params = useParams();
+  const title = params.movieTitle.split("-").join(" ");
 
-  const { favoriteMovies, userId } = useSelector((state) => state.account);
+  const { favoriteMovies } = useSelector((state) => state.account);
 
-const useRefState = useRef();
-useRefState.current = userId;
+  const useRefState = useRef();
+  useRefState.current = favoriteMovies;
+
   const dispatch = useDispatch();
 
-  const {
-    addDetails,
-    removeDetails,
-    updateFavorites,
-    addFavorite,
-    removeFavorite,
-    verifyUser
-  } = bindActionCreators(actions, dispatch);
+  const { addDetails, addMovieData } = bindActionCreators(actions, dispatch);
 
+  const fetchMovie = async () => {
+    const data = await getMovieByTitle(title);
+    const allMovies = await getAllMovies();
+    // update the details store after refresh
+    addMovieData(allMovies);
+    // check id the movie is favorite and push the data depend of the result
+    if (!useRefState.current.some((x) => x == data.id)) {
+      addDetails({ ...data, isFavorite: true });
+    } else {
+      addDetails({ ...data, isFavorite: false });
+    }
+  };
+
+  useEffect(() => {
+    fetchMovie();
+  }, []);
 
   const [rating, setRating] = useState(0); // initial rating value
 
@@ -34,7 +49,6 @@ useRefState.current = userId;
     console.log(rating);
     // other logic
   };
-
 
   return (
     <div className="movie-details">

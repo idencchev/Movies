@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { ExternalLink } from "react-external-link";
 import { useDispatch, useSelector } from "react-redux";
-import "./MovieCart.css";
-import MovieImageComponent from "../../MovieImageComponent/MovieImageComponent.js";
+import { bindActionCreators } from "redux";
+
+import MovieImageComponent from "../../MovieImageComponent/MovieImageComponent";
+
 import {
   addFavoriteMovie,
   deleteFavoriteMovie,
   getUserDataById,
-} from "../../../api/data.js";
-import { bindActionCreators } from "redux";
-import actions from "../../../redux/actions.js";
+} from "../../../api/data";
+import actions from "../../../redux/actions";
+import "./MovieCart.css";
 
 function MovieCart({
   id,
@@ -26,17 +28,12 @@ function MovieCart({
   const { isVerified, userId } = useSelector((state) => state.account);
 
   const dispatch = useDispatch();
-  const {
-    addMovieData,
-    addFavorite,
-    deleteMovieData,
-    removeFavorite,
-    updateFavorites,
-    addDetails,
-  } = bindActionCreators(actions, dispatch);
+  const { addFavorite, removeFavorite, updateFavorites, addDetails } =
+    bindActionCreators(actions, dispatch);
 
   const isFavorite = async () => {
     if (isFavoriteFromStore) {
+       // addDetails will dispatch data to update /details view
       addDetails({
         id: id,
         name: title,
