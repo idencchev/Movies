@@ -7,6 +7,10 @@ const endpoints = {
   verify: "/api/auth/verify",
   userId: (id) => `/api/auth/user/${id}`,
   favorites: "/api/favorites",
+  movieId: (id) => `/api/movies/${id}`,
+  singleSearch: (title) => `/api/movies/search?title=${title}`,
+  search: (title) => `/api/movies/search?movies=${title}`,
+  getAllMovies: "/api/movies",
 };
 
 export async function loginUser(data) {
@@ -47,11 +51,8 @@ export async function verifyToken() {
 
 export async function getAllMovies() {
   try {
-    const response = await fetch("https://api.tvmaze.com/shows", {
-      method: "GET",
-    });
-
-    return await response.json();
+    const data = await api.get(endpoints.getAllMovies);
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -65,14 +66,7 @@ export const searchFunction = async (
   addMovieData
 ) => {
   if (searchQuery) {
-    const response = await fetch(
-      `https://api.tvmaze.com/search/shows?q=${searchQuery}`,
-      {
-        method: "GET",
-      }
-    );
-
-    const fetchData = await response.json();
+    const fetchData = await api.get(endpoints.search(searchQuery));
     let data = [];
     fetchData.forEach((movie) => {
       data.push(movie.show);
@@ -118,11 +112,7 @@ export const searchFunction = async (
 
 export async function getFavoriteMovies(id) {
   try {
-    const response = await fetch(`https://api.tvmaze.com/shows/${id}`, {
-      method: "GET",
-    });
-
-    return await response.json();
+    return await api.get(endpoints.movieId(id));
   } catch (error) {
     console.log(error);
   }
@@ -130,11 +120,7 @@ export async function getFavoriteMovies(id) {
 
 export async function getMovieById(id) {
   try {
-    const response = await fetch(`https://api.tvmaze.com/shows/${id}`, {
-      method: "GET",
-    });
-
-    return await response.json();
+    return await api.get(endpoints.movieId(id));
   } catch (error) {
     console.log(error);
   }
@@ -169,13 +155,7 @@ export async function deleteFavoriteMovie(data) {
 
 export async function getMovieByTitle(title) {
   try {
-    const response = await fetch(
-      `https://api.tvmaze.com/singlesearch/shows?q=${title}`,
-      {
-        method: "GET",
-      }
-    );
-    return await response.json();
+    return await api.get(endpoints.singleSearch(title));
   } catch (error) {
     throw error;
   }
