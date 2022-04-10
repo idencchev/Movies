@@ -1,11 +1,7 @@
 const Note = require("../models/Note");
 
 async function createNote(data) {
-  const note = new Note({
-    movieId: data.movieId,
-    username: data.username,
-    note: data.note,
-  });
+  const note = new Note(data);
   return await note.save();
 }
 

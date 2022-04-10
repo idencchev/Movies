@@ -11,6 +11,9 @@ const endpoints = {
   singleSearch: (title) => `/api/movies/search?title=${title}`,
   search: (title) => `/api/movies/search?movies=${title}`,
   getAllMovies: "/api/movies",
+  getNoteByMovieId: (movieId) => `/api/notes/${movieId}`,
+  createNote: "/api/notes",
+  deleteNote: (noteId) => `/api/notes/${noteId}`,
 };
 
 export async function loginUser(data) {
@@ -156,6 +159,30 @@ export async function deleteFavoriteMovie(data) {
 export async function getMovieByTitle(title) {
   try {
     return await api.get(endpoints.singleSearch(title));
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getNoteByMovieId(movieId) {
+  try {
+    return await api.get(endpoints.getNoteByMovieId(movieId));
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function createMovieNote(data) {
+  try {
+    return await api.post(endpoints.createNote, data);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteMovieNote(noteId) {
+  try {
+    return await api.del(endpoints.deleteNote(noteId));
   } catch (error) {
     throw error;
   }

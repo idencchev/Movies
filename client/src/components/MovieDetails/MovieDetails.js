@@ -6,23 +6,35 @@ import { Rating } from "react-simple-star-rating";
 
 import MovieCart from "../Search/MovieCart/MovieCart";
 
-import { getMovieByTitle, getAllMovies } from "../../api/data";
+import {
+  getMovieByTitle,
+  getAllMovies,
+  getNoteByMovieId,
+  createMovieNote,
+  deleteMovieNote,
+} from "../../api/data";
 import actions from "../../redux/actions";
 import "./MovieDetails.css";
 
 function MovieDetails() {
-  const { movieDetails } = useSelector((state) => state.details);
+  const dispatch = useDispatch();
+
   const params = useParams();
   const title = params.movieTitle.split("-").join(" ");
 
-  const { favoriteMovies } = useSelector((state) => state.account);
+  const { movieDetails } = useSelector((state) => state.details);
+  const { favoriteMovies, userId, username } = useSelector(
+    (state) => state.account
+  );
 
   const useRefState = useRef();
   useRefState.current = favoriteMovies;
 
-  const dispatch = useDispatch();
-
   const { addDetails, addMovieData } = bindActionCreators(actions, dispatch);
+
+  // notes
+  const [notesState, setNotesState] = useState([]);
+  const [{ note }, setChangeNotes] = useState({});
 
   const fetchMovie = async () => {
     const data = await getMovieByTitle(title);
@@ -35,14 +47,51 @@ function MovieDetails() {
     } else {
       addDetails({ ...data, isFavorite: false });
     }
+    // notes
+    const notes = await getNoteByMovieId(data.id);
+    setNotesState(notes);
+  };
+
+  // notes
+  const onChangeHandler = (e) => {
+    setChangeNotes((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value.toLowerCase(),
+    }));
+  };
+
+  const submitNoteHandler = async (e) => {
+    e.preventDefault();
+    const noteData = {
+      movieId: movieDetails.id,
+      user: {
+        username: username,
+        userId: userId,
+      },
+      note: note,
+    };
+
+    if (note) {
+      const data = await createMovieNote(noteData);
+      setNotesState((prevState) => {
+        return [...prevState, data];
+      });
+    }
+  };
+
+  const deleteNote = async (id) => {
+    await deleteMovieNote(id);
+    setNotesState(notesState.filter((note) => note._id !== id));
   };
 
   useEffect(() => {
     fetchMovie();
   }, []);
 
-  const [rating, setRating] = useState(0); // initial rating value
 
+  // rating
+  const [rating, setRating] = useState(0); // initial rating value
+  
   // Catch Rating value
   const handleRating = () => {
     setRating(5);
@@ -76,9 +125,10 @@ function MovieDetails() {
               readonly={rating > 0}
             />
           </div>
-          <form className="comments-form">
+          <form onSubmit={submitNoteHandler} className="comments-form">
             <textarea
-              name="movieComment"
+              onChange={onChangeHandler}
+              name="note"
               id=""
               cols="30"
               rows="10"
@@ -89,9 +139,24 @@ function MovieDetails() {
           </form>
         </div>
         <div className="movie-details-bottom-right">
-          <p className="comments">
-            Ivan: lorem ipsum dolor sit am lorem ipsum dolor sit
-          </p>
+          {notesState.map((note) => {
+            return (
+              <>
+                <p className="comments" key={note._id}>
+                  {note.user.username}: {note.note}
+                </p>
+                {note.user.userId == userId ? (
+                  <button
+                    key={note._id + "1"}
+                    onClick={() => deleteNote(note._id)}
+                    className="delete-note"
+                  >
+                    Delete
+                  </button>
+                ) : null}
+              </>
+            );
+          })}
         </div>
       </div>
     </div>

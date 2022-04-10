@@ -5,11 +5,14 @@ const noteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  username: {
-    type: String,
-    required: true,
-    lowercase: true,
-    minlength: 4,
+  user: {
+    username: {
+      type: String,
+      required: true,
+      lowercase: true,
+      minlength: 4,
+    },
+    userId: { type: mongoose.Types.ObjectId },
   },
   note: {
     type: String,
