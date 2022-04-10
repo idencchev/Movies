@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Rating } from "react-simple-star-rating";
-import { getMovieById } from "../../api/data.js";
+import { getMovieById, getUserDataById, verifyToken } from "../../api/data.js";
 import actions from "../../redux/actions.js";
 import MovieCart from "../Search/MovieCart/MovieCart";
 import "./MovieDetails.css";
@@ -10,19 +10,21 @@ import "./MovieDetails.css";
 function MovieDetails() {
   const { movieDetails } = useSelector((state) => state.details);
 
-  ///const dispatch = useDispatch();
-  ///const { addDetails, removeDetails } = bindActionCreators(actions, dispatch);
+  const { favoriteMovies, userId } = useSelector((state) => state.account);
 
-  // const movieDetailsFetch = async () => {
-  //   const data = await getMovieById(movieDetails.id);
+const useRefState = useRef();
+useRefState.current = userId;
+  const dispatch = useDispatch();
 
-  //   return addDetails(data);
-  // };
+  const {
+    addDetails,
+    removeDetails,
+    updateFavorites,
+    addFavorite,
+    removeFavorite,
+    verifyUser
+  } = bindActionCreators(actions, dispatch);
 
-  // useEffect(() => {
-
-  //   movieDetailsFetch();
-  // }, []);
 
   const [rating, setRating] = useState(0); // initial rating value
 
@@ -33,7 +35,6 @@ function MovieDetails() {
     // other logic
   };
 
-  console.log(movieDetails);
 
   return (
     <div className="movie-details">
@@ -48,6 +49,7 @@ function MovieDetails() {
           description={movieDetails.summary}
           genre={movieDetails.genres}
           averageRuntime={movieDetails.averageRuntime}
+          isFavoriteFromStore={movieDetails.isFavorite}
         />
       </div>
       <div className="movie-details-bottom">

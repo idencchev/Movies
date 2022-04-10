@@ -27,6 +27,14 @@ function Home() {
         setFavorite((oldState) => {
           return [...oldState, data];
         });
+
+        setFavorite((oldState) => {
+          return [
+            ...new Map(
+              oldState.map((item) => [JSON.stringify(item), item])
+            ).values(),
+          ];
+        });
       });
     }
   };
@@ -54,11 +62,7 @@ function Home() {
           <>
             {favorite.length ? (
               <>
-                {[
-                  ...new Map(
-                    favorite.map((item) => [JSON.stringify(item), item])
-                  ).values(),
-                ].map((movie) => {
+                {favorite.map((movie) => {
                   return (
                     <MovieImageComponent
                       className={"favorite-img"}

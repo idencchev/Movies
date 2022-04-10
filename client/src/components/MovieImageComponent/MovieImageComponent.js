@@ -7,12 +7,17 @@ import actions from "../../redux/actions.js";
 
 function MovieImageComponent({ id, title, image, className }) {
   const dispatch = useDispatch();
-  const { addDetails, removeDetails } = bindActionCreators(actions, dispatch);
+  const { addDetails } = bindActionCreators(actions, dispatch);
+  const { favoriteMovies, userId } = useSelector((state) => state.account);
 
   const movieDetailsFetch = async () => {
     const data = await getMovieById(id);
-    removeDetails();
-    return addDetails(data);
+
+    if (!favoriteMovies.some((x) => x == data.id)) {
+      addDetails({ ...data, isFavorite: true });
+    } else {
+      addDetails({ ...data, isFavorite: false });
+    }
   };
 
   return (

@@ -52,7 +52,7 @@ export const detailsReducer = (state = { movieDetails: {} }, action) => {
     case "DETAILS":
       return {
         ...state,
-        movieDetails: { ...action.payload, isFavorite: true },
+        movieDetails: action.payload,
       };
 
     case "REMOVE_DETAILS":

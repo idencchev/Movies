@@ -32,15 +32,41 @@ function MovieCart({
     deleteMovieData,
     removeFavorite,
     updateFavorites,
+    addDetails,
   } = bindActionCreators(actions, dispatch);
 
   const isFavorite = async () => {
     if (isFavoriteFromStore) {
+      addDetails({
+        id: id,
+        name: title,
+        image: { medium: image },
+        officialSite: officialSite,
+        premiered: year,
+        summary: description,
+        genres: genre,
+        averageRuntime: averageRuntime,
+        isFavorite: false,
+      });
+
       await addFavoriteMovie({ movieId: id, id: userId });
       const userData = await getUserDataById(userId);
       addFavorite(id);
       updateFavorites(userData);
     } else {
+      // addDetails will dispatch data to update /details view
+      addDetails({
+        id: id,
+        name: title,
+        image: { medium: image },
+        officialSite: officialSite,
+        premiered: year,
+        summary: description,
+        genres: genre,
+        averageRuntime: averageRuntime,
+        isFavorite: true,
+      });
+
       await deleteFavoriteMovie({ movieId: id, id: userId });
       const userData = await getUserDataById(userId);
       updateFavorites(userData);
