@@ -70,13 +70,14 @@ function MovieDetails() {
       },
       note: note,
     };
-
     if (note) {
       const data = await createMovieNote(noteData);
       setNotesState((prevState) => {
         return [...prevState, data];
       });
     }
+    e.target.reset();
+    setChangeNotes({});
   };
 
   const deleteNote = async (id) => {
@@ -88,10 +89,9 @@ function MovieDetails() {
     fetchMovie();
   }, []);
 
-
   // rating
   const [rating, setRating] = useState(0); // initial rating value
-  
+
   // Catch Rating value
   const handleRating = () => {
     setRating(5);
@@ -141,7 +141,7 @@ function MovieDetails() {
         <div className="movie-details-bottom-right">
           {notesState.map((note) => {
             return (
-              <>
+              <div className="note">
                 <p className="comments" key={note._id}>
                   {note.user.username}: {note.note}
                 </p>
@@ -154,7 +154,7 @@ function MovieDetails() {
                     Delete
                   </button>
                 ) : null}
-              </>
+              </div>
             );
           })}
         </div>
