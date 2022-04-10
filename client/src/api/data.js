@@ -110,7 +110,6 @@ export const searchFunction = async (
         movie["isFavorite"] = true;
       }
     });
-    console.log("sfsddfg");
     addMovieData(allMoviesData);
     setNoResults(false);
     //  navigate(`/search`);
