@@ -29,7 +29,12 @@
   background-color: #c2fbd7;
 }
 
-.not-found-search{
+.not-found-search {
   font-weight: bold;
-    color: red;
+  color: red;
+}
+
+.movies-list > div > svg {
+  width: 100px;
+  height: 100px;
 }

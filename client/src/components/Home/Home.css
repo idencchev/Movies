@@ -72,3 +72,8 @@
   color: #c2fbd7;
   margin-top: 80px;
 }
+
+.home-bottom > div > svg {
+  width: 120px;
+  height: 120px;
+}

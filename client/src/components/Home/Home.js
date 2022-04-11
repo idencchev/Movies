@@ -90,7 +90,10 @@ function Home() {
             ) : (
               <>
                 {isLoading ? (
-                  <TailSpin color="#c2fbd7" />
+                  <TailSpin
+                    color="#c2fbd7"
+                    wrapperStyle={{ "justify-content": "space-around" }}
+                  />
                 ) : (
                   <p className="favorite-p">
                     You don't have favorite movies yet!

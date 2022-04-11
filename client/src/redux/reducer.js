@@ -102,7 +102,6 @@ export const movieDataReducer = (state = [], action) => {
 };
 
 export const loadingReducer = (state = false, action) => {
-  console.log(action.type);
   switch (action.type) {
     case "START":
       return true;

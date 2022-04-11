@@ -117,7 +117,13 @@ function Search() {
       </div>
       <div className="movies-list">
         {isLoading ? (
-          <TailSpin color="#c2fbd7" />
+          <TailSpin
+            color="#c2fbd7"
+            wrapperStyle={{
+              "margin-top": "30px",
+              "justify-content": "space-around",
+            }}
+          />
         ) : (
           <>
             {noResults ? (
