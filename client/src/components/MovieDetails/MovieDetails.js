@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { useParams } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
+import { TailSpin } from "react-loader-spinner";
 
 import MovieCart from "../Search/MovieCart/MovieCart";
 
@@ -20,6 +21,10 @@ import "./MovieDetails.css";
 
 function MovieDetails() {
   const dispatch = useDispatch();
+
+  // loading
+  const { startLoading, stopLoading } = bindActionCreators(actions, dispatch);
+  const isLoading = useSelector((state) => state.loading);
 
   // take movie title from params
   const params = useParams();
@@ -50,7 +55,7 @@ function MovieDetails() {
   const fetchMovie = async () => {
     const data = await getMovieByTitle(title);
     const allMovies = await getAllMovies();
-
+    stopLoading();
     // update the details store after refresh
     addMovieData(allMovies);
     // check id the movie is favorite and push the data depend of the result
@@ -73,6 +78,7 @@ function MovieDetails() {
   };
 
   useEffect(() => {
+    startLoading();
     fetchMovie();
   }, []);
 
@@ -127,76 +133,82 @@ function MovieDetails() {
 
   return (
     <div className="movie-details">
-      <div className="movie-details-top">
-        <MovieCart
-          key={movieDetails.id}
-          id={movieDetails.id}
-          title={movieDetails.name}
-          image={movieDetails.image?.medium}
-          officialSite={movieDetails.officialSite}
-          year={movieDetails.premiered}
-          description={movieDetails.summary}
-          genre={movieDetails.genres}
-          averageRuntime={movieDetails.averageRuntime}
-          isFavoriteFromStore={movieDetails.isFavorite}
-        />
-      </div>
-      {isVerified ? (
+      {isLoading ? (
+        <TailSpin color="#c2fbd7" />
+      ) : (
         <>
-          <div className="movie-details-bottom">
-            <div className="movie-details-bottom-left">
-              <h1 className="movie-details-bottom-h1">Your Review</h1>
-              <div className="movie-rating" ref={ratinguseRef}>
-                <Rating
-                  onClick={handleRating}
-                  ratingValue={rating}
-                  showTooltip={true}
-                />
-              </div>
-              <form onSubmit={submitNoteHandler} className="comments-form">
-                <textarea
-                  onChange={onChangeHandler}
-                  name="note"
-                  id=""
-                  cols="30"
-                  rows="10"
-                  className="movie-comments-textarea"
-                  placeholder="Your private notes and comments about the movie..."
-                ></textarea>
-                <input
-                  type="submit"
-                  className="submit-comment"
-                  value="Submit"
-                />
-              </form>
-            </div>
-            <div className="movie-details-bottom-right">
-              {notesState.length ? (
-                notesState.map((note) => {
-                  return (
-                    <div className="note">
-                      <p className="comments" key={note._id}>
-                        {note.user.username}: {note.note}
-                      </p>
-                      {note.user.userId == userId ? (
-                        <button
-                          key={note._id + "1"}
-                          onClick={() => deleteNote(note._id)}
-                          className="delete-note"
-                        >
-                          Delete
-                        </button>
-                      ) : null}
-                    </div>
-                  );
-                })
-              ) : (
-                <p className="comments">There is no comments yet.</p>
-              )}
-            </div>
+          <div className="movie-details-top">
+            <MovieCart
+              key={movieDetails.id}
+              id={movieDetails.id}
+              title={movieDetails.name}
+              image={movieDetails.image?.medium}
+              officialSite={movieDetails.officialSite}
+              year={movieDetails.premiered}
+              description={movieDetails.summary}
+              genre={movieDetails.genres}
+              averageRuntime={movieDetails.averageRuntime}
+              isFavoriteFromStore={movieDetails.isFavorite}
+            />
           </div>
+          {isVerified ? (
+            <>
+              <div className="movie-details-bottom">
+                <div className="movie-details-bottom-left">
+                  <h1 className="movie-details-bottom-h1">Your Review</h1>
+                  <div className="movie-rating" ref={ratinguseRef}>
+                    <Rating
+                      onClick={handleRating}
+                      ratingValue={rating}
+                      showTooltip={true}
+                    />
+                  </div>
+                  <form onSubmit={submitNoteHandler} className="comments-form">
+                    <textarea
+                      onChange={onChangeHandler}
+                      name="note"
+                      id=""
+                      cols="30"
+                      rows="10"
+                      className="movie-comments-textarea"
+                      placeholder="Your private notes and comments about the movie..."
+                    ></textarea>
+                    <input
+                      type="submit"
+                      className="submit-comment"
+                      value="Submit"
+                    />
+                  </form>
+                </div>
+                <div className="movie-details-bottom-right">
+                  {notesState.length ? (
+                    notesState.map((note) => {
+                      return (
+                        <div className="note">
+                          <p className="comments" key={note._id}>
+                            {note.user.username}: {note.note}
+                          </p>
+                          {note.user.userId == userId ? (
+                            <button
+                              key={note._id + "1"}
+                              onClick={() => deleteNote(note._id)}
+                              className="delete-note"
+                            >
+                              Delete
+                            </button>
+                          ) : null}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p className="comments">There is no comments yet.</p>
+                  )}
+                </div>
+              </div>
+            </>
+          ) : null}
         </>
-      ) : null}
+      )}
     </div>
   );
 }

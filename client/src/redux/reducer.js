@@ -5,7 +5,7 @@ const initialState = {
   favoriteMovies: [],
 };
 
-export const reducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOGIN":
       return {
@@ -101,4 +101,14 @@ export const movieDataReducer = (state = [], action) => {
   }
 };
 
-export default { reducer, detailsReducer };
+export const loadingReducer = (state = false, action) => {
+  console.log(action.type);
+  switch (action.type) {
+    case "START":
+      return true;
+    case "STOP":
+      return false;
+    default:
+      return state;
+  }
+};

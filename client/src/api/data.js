@@ -68,7 +68,8 @@ export const searchFunction = async (
   setNoResults,
   navigate,
   useRefFaforiteMovies,
-  addMovieData
+  addMovieData,
+  stopLoading
 ) => {
   if (searchQuery) {
     const fetchData = await api.get(endpoints.search(searchQuery));
@@ -113,6 +114,7 @@ export const searchFunction = async (
     setNoResults(false);
     //  navigate(`/search`);
   }
+  stopLoading();
 };
 
 export async function getFavoriteMovies(id) {

@@ -86,6 +86,22 @@ const removeFavorite = (id) => {
   };
 };
 
+const startLoading = () => {
+  return (dispatch) => {
+    dispatch({
+      type: "START",
+    });
+  };
+};
+
+const stopLoading = () => {
+  return (dispatch) => {
+    dispatch({
+      type: "STOP",
+    });
+  };
+};
+
 export default {
   verifyUser,
   login,
@@ -96,5 +112,7 @@ export default {
   addFavorite,
   deleteMovieData,
   removeFavorite,
-  updateFavorites
+  updateFavorites,
+  startLoading,
+  stopLoading,
 };

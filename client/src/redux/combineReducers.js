@@ -1,10 +1,16 @@
 import { combineReducers } from "redux";
-import { detailsReducer, movieDataReducer, reducer } from "./reducer";
+import {
+  detailsReducer,
+  movieDataReducer,
+  userReducer,
+  loadingReducer,
+} from "./reducer";
 
 const reducers = combineReducers({
-  account: reducer,
+  account: userReducer,
   details: detailsReducer,
   movieData: movieDataReducer,
+  loading: loadingReducer,
 });
 
 export default reducers;

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
+import { TailSpin } from "react-loader-spinner";
 
 import MovieImageComponent from "../MovieImageComponent/MovieImageComponent";
 
@@ -10,9 +12,15 @@ import {
   verifyToken,
 } from "../../api/data";
 import "./Home.css";
+import actions from "../../redux/actions.js";
+import { bindActionCreators } from "redux";
 
 function Home() {
+  const dispatch = useDispatch();
+  const { startLoading, stopLoading } = bindActionCreators(actions, dispatch);
+
   const { username, isVerified } = useSelector((state) => state.account);
+  const isLoading = useSelector((state) => state.loading);
 
   const [favorite, setFavorite] = useState([]);
 
@@ -21,9 +29,10 @@ function Home() {
 
     if (verifyData.isVerified) {
       const { favoriteMovies } = await getUserDataById(verifyData.id);
+
       favoriteMovies.forEach(async (id) => {
         const data = await getFavoriteMovies(id);
-
+        stopLoading();
         setFavorite((oldState) => {
           return [...oldState, data];
         });
@@ -40,6 +49,7 @@ function Home() {
   };
 
   useEffect(() => {
+    startLoading();
     favoriteMoviesData();
   }, []);
 
@@ -78,7 +88,15 @@ function Home() {
                 })}
               </>
             ) : (
-              <p className="favorite-p">You don't have favorite movies yet!</p>
+              <>
+                {isLoading ? (
+                  <TailSpin color="#c2fbd7" />
+                ) : (
+                  <p className="favorite-p">
+                    You don't have favorite movies yet!
+                  </p>
+                )}
+              </>
             )}
           </>
         ) : (

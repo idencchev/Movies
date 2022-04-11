@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
+import { TailSpin } from "react-loader-spinner";
 
 import MovieCart from "./MovieCart/MovieCart";
 import SearchComponent from "./SearchComponent/SearchComponent";
@@ -16,13 +17,14 @@ function Search() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { addMovieData, addFavorite } = bindActionCreators(
+  const { addMovieData, startLoading, stopLoading } = bindActionCreators(
     actions,
     dispatch
   );
 
   const movieStore = useSelector((state) => state.movieData);
   const { favoriteMovies } = useSelector((state) => state.account);
+  const isLoading = useSelector((state) => state.loading);
 
   const useRefFaforiteMovies = useRef();
   useRefFaforiteMovies.current = favoriteMovies;
@@ -41,8 +43,10 @@ function Search() {
       setNoResults,
       navigate,
       useRefFaforiteMovies,
-      addMovieData
+      addMovieData,
+      stopLoading
     );
+    startLoading();
   }, [searchQuery]);
 
   const moviesPerPage = 2;
@@ -112,23 +116,31 @@ function Search() {
         />
       </div>
       <div className="movies-list">
-        {noResults ? (
-          <h2 className="not-found-search">This movie has been not found!</h2>
+        {isLoading ? (
+          <TailSpin color="#c2fbd7" />
         ) : (
           <>
-            {displayMovies}
-            <ReactPaginate
-              previousLabel={"Previous"}
-              nextLabel={"Next"}
-              pageCount={pageCount}
-              onPageChange={changePage}
-              containerClassName={"paginationBttns"}
-              previousLinkClassName={"previousBttn"}
-              nextLinkClassName={"nextBttn"}
-              disabledClassName={"paginationDisabled"}
-              activeClassName={"paginationActive"}
-              initialSelected={2}
-            />
+            {noResults ? (
+              <h2 className="not-found-search">
+                This movie has been not found!
+              </h2>
+            ) : (
+              <>
+                {displayMovies}
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  pageCount={pageCount}
+                  onPageChange={changePage}
+                  containerClassName={"paginationBttns"}
+                  previousLinkClassName={"previousBttn"}
+                  nextLinkClassName={"nextBttn"}
+                  disabledClassName={"paginationDisabled"}
+                  activeClassName={"paginationActive"}
+                  initialSelected={2}
+                />
+              </>
+            )}
           </>
         )}
       </div>
