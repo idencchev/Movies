@@ -134,7 +134,10 @@ function MovieDetails() {
   return (
     <div className="movie-details">
       {isLoading ? (
-        <TailSpin color="#c2fbd7" wrapperStyle={{'margin-top': '100px', 'justify-content': 'space-around'}} />
+        <TailSpin
+          color="#c2fbd7"
+          wrapperStyle={{ marginTop: "100px", justifyContent: "space-around" }}
+        />
       ) : (
         <>
           <div className="movie-details-top">

@@ -120,8 +120,8 @@ function Search() {
           <TailSpin
             color="#c2fbd7"
             wrapperStyle={{
-              "margin-top": "30px",
-              "justify-content": "space-around",
+              marginTop: "30px",
+              justifyContent: "space-around",
             }}
           />
         ) : (

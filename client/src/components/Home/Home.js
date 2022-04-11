@@ -92,7 +92,7 @@ function Home() {
                 {isLoading ? (
                   <TailSpin
                     color="#c2fbd7"
-                    wrapperStyle={{ "justify-content": "space-around" }}
+                    wrapperStyle={{ justifyContent: "space-around" }}
                   />
                 ) : (
                   <p className="favorite-p">
