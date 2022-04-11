@@ -14,6 +14,8 @@ const endpoints = {
   getNoteByMovieId: (movieId) => `/api/notes/${movieId}`,
   createNote: "/api/notes",
   deleteNote: (noteId) => `/api/notes/${noteId}`,
+  getRating: (movieId, userId) => `/api/rating/${movieId}/${userId}`,
+  setRating: "/api/rating",
 };
 
 export async function loginUser(data) {
@@ -183,6 +185,22 @@ export async function createMovieNote(data) {
 export async function deleteMovieNote(noteId) {
   try {
     return await api.del(endpoints.deleteNote(noteId));
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getRatingByMovieId(movieId, userId) {
+  try {
+    return await api.get(endpoints.getRating(movieId, userId));
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function setMovieRating(data) {
+  try {
+    return await api.post(endpoints.setRating, data);
   } catch (error) {
     throw error;
   }

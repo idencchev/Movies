@@ -12,7 +12,7 @@ const noteSchema = new mongoose.Schema({
       lowercase: true,
       minlength: 4,
     },
-    userId: { type: mongoose.Types.ObjectId },
+    userId: { type: mongoose.Types.ObjectId, required: true },
   },
   note: {
     type: String,

@@ -12,6 +12,8 @@ import {
   getNoteByMovieId,
   createMovieNote,
   deleteMovieNote,
+  getRatingByMovieId,
+  setMovieRating,
 } from "../../api/data";
 import actions from "../../redux/actions";
 import "./MovieDetails.css";
@@ -19,38 +21,61 @@ import "./MovieDetails.css";
 function MovieDetails() {
   const dispatch = useDispatch();
 
+  // take movie title from params
   const params = useParams();
   const title = params.movieTitle.split("-").join(" ");
 
+  // movie details store
   const { movieDetails } = useSelector((state) => state.details);
-  const { favoriteMovies, userId, username } = useSelector(
+
+  // user data store
+  const { favoriteMovies, userId, username, isVerified } = useSelector(
     (state) => state.account
   );
 
-  const useRefState = useRef();
-  useRefState.current = favoriteMovies;
-
   const { addDetails, addMovieData } = bindActionCreators(actions, dispatch);
+
+  const useRefFavoriteMovies = useRef();
+  useRefFavoriteMovies.current = favoriteMovies;
+
+  const useRefUserId = useRef();
+  useRefUserId.current = userId;
 
   // notes
   const [notesState, setNotesState] = useState([]);
   const [{ note }, setChangeNotes] = useState({});
 
+  const [rating, setRating] = useState(0); // initial rating value
+
   const fetchMovie = async () => {
     const data = await getMovieByTitle(title);
     const allMovies = await getAllMovies();
+
     // update the details store after refresh
     addMovieData(allMovies);
     // check id the movie is favorite and push the data depend of the result
-    if (!useRefState.current.some((x) => x == data.id)) {
+    if (!useRefFavoriteMovies.current.some((x) => x == data.id)) {
       addDetails({ ...data, isFavorite: true });
     } else {
       addDetails({ ...data, isFavorite: false });
     }
+
     // notes
     const notes = await getNoteByMovieId(data.id);
     setNotesState(notes);
+
+    // rating
+    if (useRefUserId.current) {
+      const rateData = await getRatingByMovieId(data.id, useRefUserId.current);
+      if (rateData.length) {
+        setRating(rateData[0].rating);
+      }
+    }
   };
+
+  useEffect(() => {
+    fetchMovie();
+  }, []);
 
   // notes
   const onChangeHandler = (e) => {
@@ -85,18 +110,20 @@ function MovieDetails() {
     setNotesState(notesState.filter((note) => note._id !== id));
   };
 
-  useEffect(() => {
-    fetchMovie();
-  }, []);
-
   // rating
-  const [rating, setRating] = useState(0); // initial rating value
+  const ratinguseRef = useRef(0);
 
-  // Catch Rating value
-  const handleRating = () => {
-    setRating(5);
-    console.log(rating);
-    // other logic
+  const handleRating = async () => {
+    const rate = Number(ratinguseRef.current.textContent);
+
+    setRating(rate * 20);
+    
+    const rateData = {
+      movieId: movieDetails.id,
+      userId: userId,
+      rating: rate * 20,
+    };
+    setMovieRating(rateData);
   };
 
   return (
@@ -115,50 +142,58 @@ function MovieDetails() {
           isFavoriteFromStore={movieDetails.isFavorite}
         />
       </div>
-      <div className="movie-details-bottom">
-        <div className="movie-details-bottom-left">
-          <h1 className="movie-details-bottom-h1">Your Review</h1>
-          <div className="movie-rating">
-            <Rating
-              onClick={handleRating}
-              ratingValue={rating}
-              readonly={rating > 0}
-            />
-          </div>
-          <form onSubmit={submitNoteHandler} className="comments-form">
-            <textarea
-              onChange={onChangeHandler}
-              name="note"
-              id=""
-              cols="30"
-              rows="10"
-              className="movie-comments-textarea"
-              placeholder="Your private notes and comments about the movie..."
-            ></textarea>
-            <input type="submit" className="submit-comment" value="Submit" />
-          </form>
-        </div>
-        <div className="movie-details-bottom-right">
-          {notesState.map((note) => {
-            return (
-              <div className="note">
-                <p className="comments" key={note._id}>
-                  {note.user.username}: {note.note}
-                </p>
-                {note.user.userId == userId ? (
-                  <button
-                    key={note._id + "1"}
-                    onClick={() => deleteNote(note._id)}
-                    className="delete-note"
-                  >
-                    Delete
-                  </button>
-                ) : null}
+      {isVerified ? (
+        <>
+          <div className="movie-details-bottom">
+            <div className="movie-details-bottom-left">
+              <h1 className="movie-details-bottom-h1">Your Review</h1>
+              <div className="movie-rating" ref={ratinguseRef}>
+                <Rating
+                  onClick={handleRating}
+                  ratingValue={rating}
+                  showTooltip={true}
+                />
               </div>
-            );
-          })}
-        </div>
-      </div>
+              <form onSubmit={submitNoteHandler} className="comments-form">
+                <textarea
+                  onChange={onChangeHandler}
+                  name="note"
+                  id=""
+                  cols="30"
+                  rows="10"
+                  className="movie-comments-textarea"
+                  placeholder="Your private notes and comments about the movie..."
+                ></textarea>
+                <input
+                  type="submit"
+                  className="submit-comment"
+                  value="Submit"
+                />
+              </form>
+            </div>
+            <div className="movie-details-bottom-right">
+              {notesState.map((note) => {
+                return (
+                  <div className="note">
+                    <p className="comments" key={note._id}>
+                      {note.user.username}: {note.note}
+                    </p>
+                    {note.user.userId == userId ? (
+                      <button
+                        key={note._id + "1"}
+                        onClick={() => deleteNote(note._id)}
+                        className="delete-note"
+                      >
+                        Delete
+                      </button>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }

@@ -33,7 +33,7 @@ function MovieCart({
 
   const isFavorite = async () => {
     if (isFavoriteFromStore) {
-       // addDetails will dispatch data to update /details view
+      // addDetails will dispatch data to update /details view
       addDetails({
         id: id,
         name: title,
@@ -97,9 +97,12 @@ function MovieCart({
           {averageRuntime || "not availabe"} minutes
         </p>
 
-        <p className="description">
-          {description || "The description is not available."}
-        </p>
+        <p
+          className="description"
+          dangerouslySetInnerHTML={{
+            __html: description || "The description is not available.",
+          }}
+        ></p>
 
         <ExternalLink className="movie-official-site" href={officialSite}>
           Visit official site
