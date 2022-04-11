@@ -22,11 +22,11 @@ function App() {
     const verifyData = await verifyToken();
 
     if (verifyData.isVerified) {
-      const userData = await getUserDataById(verifyData.id);
-      verifyUser(userData);
-      if (location.pathname == "/login" || "/register") {
+      if (location.pathname === "/login" || location.pathname === "/register") {
         navigate("/");
       }
+      const userData = await getUserDataById(verifyData.id);
+      return verifyUser(userData);
     }
   };
 

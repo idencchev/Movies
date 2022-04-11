@@ -68,7 +68,10 @@ function Home() {
                       className={"favorite-img"}
                       key={movie.id}
                       id={movie.id}
-                      image={movie.image?.medium}
+                      image={
+                        movie.image?.medium ||
+                        "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+                      }
                       title={movie.name}
                     />
                   );
