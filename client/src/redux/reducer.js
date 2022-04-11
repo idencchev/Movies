@@ -65,7 +65,6 @@ export const detailsReducer = (state = { movieDetails: {} }, action) => {
 };
 
 export const movieDataReducer = (state = [], action) => {
-  console.log(action.type);
   switch (action.type) {
     case "LOAD":
       return [...action.payload];
