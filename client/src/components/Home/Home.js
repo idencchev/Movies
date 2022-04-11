@@ -50,7 +50,7 @@ function Home() {
     startLoading();
     favoriteMoviesData();
   }, []);
-  console.log(isLoading);
+
   return (
     <div className="home">
       <div className="home-top">
