@@ -1,3 +1,4 @@
+const { isAuthenticated } = require("../middlewares/auth");
 const {
   createNote,
   deleteNote,
@@ -6,7 +7,7 @@ const {
 
 const router = require("express").Router();
 
-router.get("/:movieId", async (req, res) => {
+router.get("/:movieId", isAuthenticated, async (req, res) => {
   try {
     const data = await findNotesByMovieId(req.params.movieId);
     res.status(200).json(data);
@@ -15,7 +16,7 @@ router.get("/:movieId", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
   try {
     const data = await createNote(req.body);
     res.status(201).json(data);
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
   try {
     await deleteNote(req.params.id);
     res.status(200).json("Deleted successfully.");

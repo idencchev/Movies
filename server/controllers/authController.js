@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config/config");
-const { registerUser, loginUser, getUserById } = require("../services/authService");
+const { isAuthenticated } = require("../middlewares/auth");
+const {
+  registerUser,
+  loginUser,
+  getUserById,
+} = require("../services/authService");
 
 router.post("/register", async (req, res) => {
   try {
@@ -30,13 +35,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/logout", (req, res) => {
+router.get("/logout", isAuthenticated, (req, res) => {
   res.clearCookie("x-auth-token");
   res.status(200).json("Logget out.");
 });
 
-
-router.get("/user/:id", async (req, res) => {
+router.get("/user/:id", isAuthenticated, async (req, res) => {
   try {
     const userData = await getUserById(req.params.id);
     res.status(200).json(userData);
@@ -59,7 +63,7 @@ router.post("/verify", async (req, res, next) => {
         isVerified = true;
         res.status(200).json({
           id: decoded.id,
-          isVerified
+          isVerified,
         });
         return;
       }

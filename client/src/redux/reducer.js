@@ -34,7 +34,6 @@ export const reducer = (state = initialState, action) => {
         favoriteMovies: action.payload.favoriteMovies,
       };
     case "UPDATE_FAVORITES":
-
       return {
         ...state,
         isVerified: true,
@@ -66,6 +65,7 @@ export const detailsReducer = (state = { movieDetails: {} }, action) => {
 };
 
 export const movieDataReducer = (state = [], action) => {
+  console.log(action.type);
   switch (action.type) {
     case "LOAD":
       return [...action.payload];
@@ -79,11 +79,11 @@ export const movieDataReducer = (state = [], action) => {
 
       setToFalse[0].isFavorite = false;
 
-      state.filter((x) => {
-        return x.id != action.payload;
-      });
-
-      return [...state, ...setToFalse];
+      return [
+        ...new Map(
+          [...state, ...setToFalse].map((item) => [JSON.stringify(item), item])
+        ).values(),
+      ];
 
     case "REMOVE_FAVORITE":
       let setToTrue = state.filter((x) => {
@@ -92,11 +92,11 @@ export const movieDataReducer = (state = [], action) => {
 
       setToTrue[0].isFavorite = true;
 
-      state.filter((x) => {
-        return x.id != action.payload;
-      });
-
-      return [...state, ...setToTrue];
+      return [
+        ...new Map(
+          [...state, ...setToTrue].map((item) => [JSON.stringify(item), item])
+        ).values(),
+      ];
     default:
       return state;
   }

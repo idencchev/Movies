@@ -68,7 +68,7 @@ function Home() {
                       className={"favorite-img"}
                       key={movie.id}
                       id={movie.id}
-                      image={movie.image.medium}
+                      image={movie.image?.medium}
                       title={movie.name}
                     />
                   );

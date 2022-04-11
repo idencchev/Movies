@@ -1,7 +1,8 @@
 const router = require("express").Router();
+const { isAuthenticated } = require("../middlewares/auth");
 const { getMovieRating, addMovieRating } = require("../services/ratingService");
 
-router.get("/:movieId/:userId", async (req, res) => {
+router.get("/:movieId/:userId", isAuthenticated, async (req, res) => {
   try {
     const data = await getMovieRating(req.params.movieId, req.params.userId);
     res.status(200).json(data);
@@ -10,7 +11,7 @@ router.get("/:movieId/:userId", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
   try {
     const data = await addMovieRating(req.body);
     res.status(200).json(data);

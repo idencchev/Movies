@@ -1,3 +1,4 @@
+const { isAuthenticated } = require("../middlewares/auth.js");
 const {
   createFavoriteMovie,
   removeFavoriteMovie,
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
   try {
     const { _id, favoriteMovies } = await createFavoriteMovie(req.body);
     res.status(201).json({ _id, favoriteMovies });
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/", async (req, res) => {
+router.put("/", isAuthenticated, async (req, res) => {
   try {
     const data = await removeFavoriteMovie(req.body);
     res.status(201).json(data);

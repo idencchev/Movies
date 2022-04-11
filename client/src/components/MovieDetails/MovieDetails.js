@@ -60,12 +60,11 @@ function MovieDetails() {
       addDetails({ ...data, isFavorite: false });
     }
 
-    // notes
-    const notes = await getNoteByMovieId(data.id);
-    setNotesState(notes);
-
-    // rating
+    // fetch notes and rating data if user is logged in
     if (useRefUserId.current) {
+      const notes = await getNoteByMovieId(data.id);
+      setNotesState(notes);
+
       const rateData = await getRatingByMovieId(data.id, useRefUserId.current);
       if (rateData.length) {
         setRating(rateData[0].rating);
@@ -117,7 +116,7 @@ function MovieDetails() {
     const rate = Number(ratinguseRef.current.textContent);
 
     setRating(rate * 20);
-    
+
     const rateData = {
       movieId: movieDetails.id,
       userId: userId,
@@ -172,24 +171,28 @@ function MovieDetails() {
               </form>
             </div>
             <div className="movie-details-bottom-right">
-              {notesState.map((note) => {
-                return (
-                  <div className="note">
-                    <p className="comments" key={note._id}>
-                      {note.user.username}: {note.note}
-                    </p>
-                    {note.user.userId == userId ? (
-                      <button
-                        key={note._id + "1"}
-                        onClick={() => deleteNote(note._id)}
-                        className="delete-note"
-                      >
-                        Delete
-                      </button>
-                    ) : null}
-                  </div>
-                );
-              })}
+              {notesState.length ? (
+                notesState.map((note) => {
+                  return (
+                    <div className="note">
+                      <p className="comments" key={note._id}>
+                        {note.user.username}: {note.note}
+                      </p>
+                      {note.user.userId == userId ? (
+                        <button
+                          key={note._id + "1"}
+                          onClick={() => deleteNote(note._id)}
+                          className="delete-note"
+                        >
+                          Delete
+                        </button>
+                      ) : null}
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="comments">There is no comments yet.</p>
+              )}
             </div>
           </div>
         </>
