@@ -5,11 +5,16 @@
 
 </div>
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/idencchev/movies?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/idencchev/movies?color=f7df1e">
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/idencchev/movies?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/idencchev/movies?color=green">
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/idencchev/movies?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/idencchev/movies?color=green">
+  
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/idencchev/movies?color=green">
+   
+  <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/idencchev/movies?style=social">
+  
 </p>
 
 <p align="center">
