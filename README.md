@@ -1,5 +1,9 @@
 <h1 align="center">Movie Library</h1>
+<div align="center" id="top">
 
+[<img alt="live-demo" width="20%" src="https://www.a2solutions.ae/wp-content/uploads/2016/12/live-demo.png" />](https://movie-library-1.herokuapp.com/)
+
+</div>
 <p align="center">
   <img alt="Github top language" src="https://img.shields.io/github/languages/top/idencchev/movies?color=56BEB8">
 
@@ -30,6 +34,7 @@ A movie library application.
 </p>
 
 ### REST-API
+
 - [ExpressJS](https://github.com/expressjs/express/blob/master/Readme.md) - v4.17.2
 - [MongoDB](https://www.mongodb.com/) - v4.4.12
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
@@ -42,6 +47,7 @@ A movie library application.
 - [Axios](https://github.com/axios/axios/blob/master/README.md) - v0.26.1
 
 ### Client-side
+
 - [Create React App](https://github.com/facebook/create-react-app/blob/main/README.md) - v5.0.0(React: v18.0.0)
 - [React Router Dom](https://github.com/remix-run/react-router/blob/main/README.md) - v6.3.0
 - [Redux](https://github.com/reduxjs/redux/blob/master/README.md) - v4.1.2
@@ -72,6 +78,7 @@ $ cd client
 $ npm install - to install dependencies
 $ npm start - to start the client side
 ```
+
 **Now your default browser should open at http://localhost:3000/ and you are all set to give it a try!**
 
 ## :memo: License
