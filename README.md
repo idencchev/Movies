@@ -45,6 +45,7 @@ A movie library application.
 - [Cors](https://github.com/expressjs/cors/blob/master/README.md) - v2.8.5
 - [Nodemon](https://github.com/remy/nodemon/blob/main/README.md) - v1.19.2
 - [Axios](https://github.com/axios/axios/blob/master/README.md) - v0.26.1
+- [TVmaze’s API ](https://www.tvmaze.com/api) - external movie database
 
 ### Client-side
 
