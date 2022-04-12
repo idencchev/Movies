@@ -82,11 +82,12 @@ $ npm start - to start the client side
 **Now your default browser should open at http://localhost:3000/ and you are all set to give it a try!**
 
 **Test accounts:**
-username: ivan
-password: 123456
 
-username: pesho
-password: 123456
+**Username**: ivan  
+**Password**: 123456
+
+**Username**: pesho  
+**Password**: 123456
 
 ## :memo: License
 
