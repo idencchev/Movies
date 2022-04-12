@@ -12,10 +12,35 @@ function Register() {
     rePass: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const onCreateHandler = async (e) => {
     e.preventDefault();
-    await registerUser(userData);
-    navigate("/");
+
+    try {
+      if (userData.username === "" && userData.password === "") {
+        return setErrorMessage("Please enter a username and password!");
+      } else if (userData.username === "") {
+        return setErrorMessage("Please enter a username!");
+      } else if (userData.password === "") {
+        return setErrorMessage("Please enter a password!");
+      } else if (userData.rePass === "") {
+        return setErrorMessage("Please repeat the password!");
+      } else if (userData.password !== userData.rePass) {
+        return setErrorMessage("The passwords are not same!");
+      } else if (userData.username.length < 4) {
+        return setErrorMessage("Username must be at least 4 characters long!");
+      } else if (userData.password.length < 6) {
+        return setErrorMessage("Password must be at least 6 characters long!");
+      }
+
+      await registerUser(userData);
+      setErrorMessage("");
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(error);
+      console.log(error);
+    }
   };
 
   const onChangeHandler = (e) => {
@@ -28,7 +53,7 @@ function Register() {
   return (
     <div className="register">
       <h1 className="register-h1">REGISTER</h1>
-
+      {errorMessage ? <p className="error-message">{errorMessage}</p> : null}
       <form onSubmit={onCreateHandler} className="register-form">
         <label htmlFor="username">Username</label>
         <input
@@ -37,7 +62,6 @@ function Register() {
           type="text"
           placeholder="Username"
           name="username"
-          required
         />
 
         <label htmlFor="password">Password</label>
@@ -47,7 +71,6 @@ function Register() {
           type="password"
           placeholder="Password"
           name="password"
-          required
         />
 
         <label htmlFor="rePass">Repeat Password</label>
@@ -57,7 +80,6 @@ function Register() {
           type="password"
           placeholder="Repeat Password"
           name="rePass"
-          required
         />
         <input className="btn-register" type="submit" value="Register" />
       </form>

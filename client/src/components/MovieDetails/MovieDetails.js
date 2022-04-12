@@ -48,9 +48,12 @@ function MovieDetails() {
 
   // notes
   const [notesState, setNotesState] = useState([]);
-  const [{ note }, setChangeNotes] = useState({});
+  const [{ note }, setChangeNotes] = useState({ note: "" });
 
   const [rating, setRating] = useState(0); // initial rating value
+
+  // error message
+  const [isError, setIsError] = useState(false);
 
   const fetchMovie = async () => {
     const data = await getMovieByTitle(title);
@@ -100,14 +103,19 @@ function MovieDetails() {
       },
       note: note,
     };
-    if (note) {
-      const data = await createMovieNote(noteData);
-      setNotesState((prevState) => {
-        return [...prevState, data];
-      });
+
+    if (note.length < 10) {
+      return setIsError(true);
     }
+
+    const data = await createMovieNote(noteData);
+    setNotesState((prevState) => {
+      return [...prevState, data];
+    });
+
     e.target.reset();
-    setChangeNotes({});
+    setIsError(false);
+    setChangeNotes({ note: "" });
   };
 
   const deleteNote = async (id) => {
@@ -166,6 +174,11 @@ function MovieDetails() {
                       showTooltip={true}
                     />
                   </div>
+                  {isError ? (
+                    <p className="error-message">
+                      Your comment must be at least 10 characters long!
+                    </p>
+                  ) : null}
                   <form onSubmit={submitNoteHandler} className="comments-form">
                     <textarea
                       onChange={onChangeHandler}

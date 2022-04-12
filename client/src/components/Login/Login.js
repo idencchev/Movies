@@ -24,11 +24,20 @@ function Login() {
     }));
   };
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const onLoginHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginUser(userData);
+      if (userData.username === "" && userData.password === "") {
+        return setErrorMessage("Please enter a username and password!");
+      } else if (userData.username === "") {
+        return setErrorMessage("Please enter a username!");
+      } else if (userData.password === "") {
+        return setErrorMessage("Please enter a password!");
+      }
 
+      const response = await loginUser(userData);
       const loginData = {
         isVerified: true,
         username: response.userData.username,
@@ -37,8 +46,10 @@ function Login() {
       };
 
       login(loginData);
+      setErrorMessage("");
       navigate("/");
     } catch (error) {
+      setErrorMessage(error);
       console.log(error);
     }
   };
@@ -46,7 +57,7 @@ function Login() {
   return (
     <div className="login">
       <h1 className="login-h1">LOGIN</h1>
-
+      {errorMessage ? <p className="error-message">{errorMessage}</p> : null}
       <form onSubmit={onLoginHandler} className="login-form">
         <label htmlFor="username">Username</label>
         <input
@@ -55,9 +66,7 @@ function Login() {
           type="text"
           placeholder="Username"
           name="username"
-          required
         />
-
         <label htmlFor="password">Password</label>
         <input
           onChange={onChangeHandler}
@@ -65,7 +74,6 @@ function Login() {
           type="password"
           placeholder="Password"
           name="password"
-          required
         />
         <input className="btn-login" type="submit" value="Login" />
       </form>
